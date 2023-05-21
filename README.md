@@ -6,7 +6,7 @@ A quick and easy theme builder for customtkinter!
 - Load themes
 - Quick test themes with an example
 ## Download
-### [<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Akascape/TkNodeSystem?&color=green&label=Download%20CTkThemeMaker&logo=Python&logoColor=yellow&style=for-the-badge"  width="400">](https://github.com/Akascape/CTkThemeMaker/archive/refs/heads/main.zip)
+### [<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Akascape/CTkThemeMaker?&color=green&label=Download%20CTkThemeMaker&logo=Python&logoColor=yellow&style=for-the-badge"  width="400">](https://github.com/Akascape/CTkThemeMaker/archive/refs/heads/main.zip)
 
 Extract the zip file and run `CTkThemeMaker.py`.
 
