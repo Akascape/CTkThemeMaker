@@ -1,9 +1,11 @@
+import platform
 import tkinter
 import customtkinter
 from tkinter.colorchooser import askcolor
 from tkinter import filedialog, messagebox
 import json
 import os
+import subprocess
 
 """
 Author: Akash Bora (Akascape)
@@ -372,7 +374,7 @@ class App(customtkinter.CTk):
 
     # Function for quick testing the theme
     def test(self):
-        DIRPATH = os.getcwd()
+        DIRPATH = f"{__file__}".replace("ThemeMaker.py", "")
         if not os.path.exists(os.path.join(DIRPATH, "CTkExample.py")):
             tkinter.messagebox.showerror("Sorry!","Cannot test, example is missing!")
             return
@@ -380,10 +382,15 @@ class App(customtkinter.CTk):
         with open("CTkTheme_test.json", "w") as f:
             json.dump(self.json_data, f, indent=2)
             f.close()
-            
-        DIRPATH = os.getcwd()
+          
         ch = os.path.join(DIRPATH, "CTkExample.py")
-        os.system('"%s"' % ch)
+        if platform.system().lower() == "darwin":
+          subprocess.run(["python3", ch])
+        elif platform.system().lower() == "windows":
+          subprocess.run(["python", ch])
+        else:
+          tkinter.messagebox.showerror("Sorry!","Operating system not supported!")
+          return
 
     # Closing function   
     def on_closing(self):

@@ -2,6 +2,7 @@ import tkinter
 import tkinter.messagebox
 import customtkinter
 from PIL import Image
+import platform
 import os
 
 customtkinter.set_appearance_mode("System")
@@ -38,9 +39,16 @@ class App(customtkinter.CTk):
         self.sidebar_button_2.grid(row=2, column=0, padx=20, pady=10)
         self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
         self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
-        self.Image_label = customtkinter.CTkLabel(self.sidebar_frame, text="",
-                                                  image=customtkinter.CTkImage(Image.open(os.path.dirname(customtkinter.__file__)
-                                                                                          +"\\assets\\icons\\CustomTkinter_icon_Windows.ico"), size=(100,100)))
+        if platform.system().lower() == 'windows':
+            self.Image_label = customtkinter.CTkLabel(self.sidebar_frame, text="",
+                                                    image=customtkinter.CTkImage(Image.open(os.path.dirname(customtkinter.__file__)
+                                                                                            +"\\assets\\icons\\CustomTkinter_icon_Windows.ico"), size=(100,100)))
+        elif platform.system().lower() == 'darwin':
+            self.Image_label = customtkinter.CTkLabel(self.sidebar_frame, text="",
+                                                    image=customtkinter.CTkImage(Image.open(os.path.dirname(customtkinter.__file__)
+                                                                                            +"/assets/icons/CustomTkinter_icon_Windows.ico"), size=(100,100)))
+        else:
+            tkinter.messagebox.showerror("Sorry!","Operating system not supported!")
         self.Image_label.grid(row=4, column=0, padx=20, pady=10) 
         self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
         self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
