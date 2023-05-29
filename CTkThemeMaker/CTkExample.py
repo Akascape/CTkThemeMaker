@@ -6,7 +6,7 @@ import os
 
 customtkinter.set_appearance_mode("System")
 
-DIRPATH = os.getcwd()
+DIRPATH = os.path.dirname(os.path.abspath(__file__))
 
 if os.path.exists(os.path.join(DIRPATH,"CTkTheme_test.json")):
     themepath = os.path.join(DIRPATH,"CTkTheme_test.json")       
@@ -32,15 +32,15 @@ class App(customtkinter.CTk):
         self.sidebar_frame.grid_rowconfigure(4, weight=1)
         self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="CustomTkinter", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
-        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: print("Button Clicked"))
         self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
-        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: print("Button Clicked"), hover=False)
         self.sidebar_button_2.grid(row=2, column=0, padx=20, pady=10)
-        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: print("Button Clicked"))
         self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
         self.Image_label = customtkinter.CTkLabel(self.sidebar_frame, text="",
-                                                  image=customtkinter.CTkImage(Image.open(os.path.dirname(customtkinter.__file__)
-                                                                                          +"\\assets\\icons\\CustomTkinter_icon_Windows.ico"), size=(100,100)))
+                                                  image=customtkinter.CTkImage(Image.open(os.path.join(os.path.dirname(customtkinter.__file__),
+                                                                                          "assets","icons","CustomTkinter_icon_Windows.ico")), size=(100,100)))
         self.Image_label.grid(row=4, column=0, padx=20, pady=10) 
         self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
         self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
@@ -136,16 +136,11 @@ class App(customtkinter.CTk):
         self.slider_2.grid(row=0, column=1, rowspan=5, padx=(10, 10), pady=(10, 10), sticky="ns")
         self.progressbar_3 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="vertical")
         self.progressbar_3.grid(row=0, column=2, rowspan=5, padx=(10, 20), pady=(10, 10), sticky="ns")
-
-        # new top level
-        def new_window():
-            top_level = customtkinter.CTkToplevel()
-            customtkinter.CTkLabel(top_level, text="A TopLevel Window").grid(padx=100, pady=100)
             
         label = customtkinter.CTkLabel(self.sidebar_frame, text="create a new window", font=("",13))
         label.grid()
 
-        label.bind("<Button-1>", lambda event: new_window())
+        label.bind("<Button-1>", lambda event: self.new_window())
         label.bind("<Enter>", lambda event: label.configure(font=("",13,"underline"), cursor="hand2"))
         label.bind("<Leave>", lambda event: label.configure(font=("",13), cursor="arrow"))
 
@@ -170,17 +165,20 @@ class App(customtkinter.CTk):
 
     def open_input_dialog_event(self):
         dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="CTkInputDialog")
-        print("CTkInputDialog", dialog.get_input())
+        print("CTkInputDialog: ", dialog.get_input())
 
+    def new_window(self):
+        top_level = customtkinter.CTkToplevel()
+        customtkinter.CTkLabel(top_level, text="A TopLevel Window").grid(padx=100, pady=100)
+        top_level.attributes("-topmost", 1)
+        self.after(100, lambda: top_level.attributes("-topmost", 0))
+        
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
     def change_scaling_event(self, new_scaling: str):
         new_scaling_float = int(new_scaling.replace("%", "")) / 100
-        customtkinter.set_widget_scaling(new_scaling_float)
-
-    def sidebar_button_event(self):
-        print("Button Clicked")      
+        customtkinter.set_widget_scaling(new_scaling_float)  
             
 if __name__ == "__main__":
     app = App()

@@ -1,22 +1,23 @@
 import tkinter
 import customtkinter
 from tkinter.colorchooser import askcolor
-from tkinter import filedialog, messagebox
 import json
 import os
+import subprocess
+import sys
 
 """
 Author: Akash Bora (Akascape)
 Quick Guide:
 This program can be used to create custom themes for customtkinter.
 You can easily create and edit themes for your applications.
-Customtkinter themefiles are .json files that can be used with customtkinter using the 'customtkinter.set_default_color_theme(theme_file)' method.
+Customtkinter themefiles are .json files that can be used with customtkinter using the 'customtkinter.set_default_color_theme' method.
 Example: customtkinter.set_default_color_theme("Path/my_theme.json")
 A customtkinter theme has one dark and one light color attribute for each widget type and you have to choose the 2 colors for each widget type.
 (You can switch between them with the 'set_appearance_mode' method)
-Currently it is not possible to switch between themes, so only appearance_mode can be changed.
+Currently it is not possible to switch themes, so only appearance_mode can be changed.
 Default none color is "transparent" which has no color, leaving a widget with this value will give you a blank widget.
-(Do not set transparent to CTk window)
+(transparent is not supported in all widgets)
 """
 
 class App(customtkinter.CTk):
@@ -269,7 +270,6 @@ class App(customtkinter.CTk):
         
         self.update(None)
 
-
     #--------------------class App Functions--------------------#
 
     # Function for changing current widget type wih right button
@@ -331,7 +331,8 @@ class App(customtkinter.CTk):
 
     # Function for exporting the theme file         
     def save(self):
-        save_file = tkinter.filedialog.asksaveasfilename(initialfile="Untitled.json", filetypes=[('json', ['*.json']),('All Files', '*.*')], defaultextension=".json")
+        save_file = tkinter.filedialog.asksaveasfilename(initialfile="Untitled.json", defaultextension=".json",
+                                                         filetypes=[('json', ['*.json']),('All Files', '*.*')])
         try:
             if save_file:
                 with open(save_file, "w") as f:
@@ -349,7 +350,6 @@ class App(customtkinter.CTk):
             if open_json:
                 with open(open_json) as f:
                     self.json_data = json.load(f)
-                    f.close()
                     
             for i in self.json_data:
                 for key, value in self.json_data.get(i).items():
@@ -358,7 +358,7 @@ class App(customtkinter.CTk):
                         
             self.update(self.menu.get())
         except:
-            tkinter.messagebox.showerror("Error!","Unable to load the theme file!")
+            tkinter.messagebox.showerror("Error!","Unable to load this theme file!")
         
 
     # Function for resetting the current colors of the widget to null (default value)
@@ -372,23 +372,25 @@ class App(customtkinter.CTk):
 
     # Function for quick testing the theme
     def test(self):
-        DIRPATH = os.getcwd()
+        DIRPATH = os.path.dirname(os.path.abspath(__file__))
         if not os.path.exists(os.path.join(DIRPATH, "CTkExample.py")):
-            tkinter.messagebox.showerror("Sorry!","Cannot test, example is missing!")
+            tkinter.messagebox.showerror("Sorry!","Cannot test, example program is missing!")
             return
 
-        with open("CTkTheme_test.json", "w") as f:
+        with open(os.path.join(DIRPATH, "CTkTheme_test.json"), "w") as f:
             json.dump(self.json_data, f, indent=2)
-            f.close()
             
-        DIRPATH = os.getcwd()
         ch = os.path.join(DIRPATH, "CTkExample.py")
-        os.system('"%s"' % ch)
-
+        
+        if sys.platform.startswith("win"):   
+            subprocess.run(["python", ch])
+        else:
+            subprocess.run(["python3", ch])
+            
     # Closing function   
     def on_closing(self):
-        quit = tkinter.messagebox.askokcancel(title="Exit?", message= "Do you want to exit?")
-        if quit:
+        quit_ = tkinter.messagebox.askokcancel(title="Exit?", message= "Do you want to exit?")
+        if quit_:
             self.destroy()
             
 if __name__ == "__main__":
