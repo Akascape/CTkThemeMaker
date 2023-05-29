@@ -6,6 +6,7 @@ A quick and easy theme builder for customtkinter!
 - Save themes
 - Load themes
 - **Quickly test** your themes with a built-in example
+- Lite application
 - No installation required, just run the program and make your theme 😤
 
 ## Download
