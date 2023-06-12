@@ -14,7 +14,7 @@ A quick and easy theme builder for customtkinter!
 
 **Compatible ctk version: 5.1.3**
 
-Extract the zip file and run `CTkThemeMaker.py`.
+Extract the zip file and run `CTkThemeMaker.py`
 ### [<img src="https://img.shields.io/badge/Contribute-Theme-informational?&color=c8ab09&style=for-the-badge" width="150">](https://github.com/Akascape/CTkThemeMaker/discussions/categories/contribute-theme)
 
 ![Screenshot 2023-02-05 004912](https://user-images.githubusercontent.com/89206401/216785762-7277326d-3a87-4e01-aae3-302af1e5ec3a.jpg)
