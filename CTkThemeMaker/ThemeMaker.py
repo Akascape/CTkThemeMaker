@@ -5,18 +5,20 @@ import json
 import os
 import subprocess
 import sys
+import copy
 
 """
 Author: Akash Bora (Akascape)
+License: MIT
 Quick Guide:
 This program can be used to create custom themes for customtkinter.
 You can easily create and edit themes for your applications.
-Customtkinter themefiles are .json files that can be used with customtkinter using the 'customtkinter.set_default_color_theme' method.
-Example: customtkinter.set_default_color_theme("Path/my_theme.json")
+Customtkinter themefiles are .json files that can be used with customtkinter using the 'set_default_color_theme' method.
+Example: customtkinter.set_default_color_theme("Path//my_theme.json")
 A customtkinter theme has one dark and one light color attribute for each widget type and you have to choose the 2 colors for each widget type.
 (You can switch between them with the 'set_appearance_mode' method)
 Currently it is not possible to switch themes, so only appearance_mode can be changed.
-Default none color is "transparent" which has no color, leaving a widget with this value will give you a blank widget.
+Default reset color is "transparent" which has no color, means it take the color from the background instead.
 (transparent is not supported in all widgets)
 """
 
@@ -208,8 +210,8 @@ class App(customtkinter.CTk):
              'CTkScrollableFrame':["label_fg_color"],
              'DropdownMenu':["fg_color", "hover_color", "text_color"]}
 
-    widgetlist = [key for key in widgets] # This is a dynamic list of all the widget type
-    current = widgetlist[0] # This is the current widget type selected
+    widgetlist = [key for key in widgets] 
+    current = widgetlist[0]
 
     for i in json_data:
         for key, value in json_data.get(i).items():
@@ -248,7 +250,7 @@ class App(customtkinter.CTk):
         self.menu.grid(row=1, column=0, columnspan=6, sticky="nswe", padx=20)
 
         self.button_light = customtkinter.CTkButton(master=self, height=100, width=200, corner_radius=10, border_color="white",
-                                         text_color="grey50", border_width=2, text="Light", hover=False, command=self.change_color_light)
+                                         text_color="grey80", border_width=2, text="Light", hover=False, command=self.change_color_light)
         self.button_light.grid(row=2, column=0, sticky="nswe", columnspan=3, padx=(20,5), pady=20)
     
         self.button_dark = customtkinter.CTkButton(master=self, height=100, width=200, corner_radius=10, border_color="white",
@@ -264,34 +266,38 @@ class App(customtkinter.CTk):
     
         self.button_reset = customtkinter.CTkButton(master=self, height=40, width=110, text="Reset", command=self.reset)
         self.button_reset.grid(row=3, column=4,  columnspan=2, sticky="nswe", padx=(5,20), pady=(0,20))
+        
+        self.pallete = customtkinter.CTkButton(master=self, height=40, width=110, text="Color Pallete", command=self.show_colors)
+        self.pallete.grid(row=4, column=0, columnspan=3, sticky="nswe", padx=(20,5), pady=(0,20))
 
         self.quick_test = customtkinter.CTkButton(master=self, height=40, width=110, text="QUICK TEST", command=self.test)
-        self.quick_test.grid(row=4, column=0, columnspan=6, sticky="nswe", padx=20, pady=(0,20))
+        self.quick_test.grid(row=4, column=3, columnspan=3, sticky="nswe", padx=(5,20), pady=(0,20))
+
         
         self.update(None)
 
-    #--------------------class App Functions--------------------#
+    #--------------------App Functions--------------------#
 
-    # Function for changing current widget type wih right button
     def change_mode_right(self):
+        """ changing current widget type wih right button """
         self.widgetlist.append(self.widgetlist.pop(0))
         self.current = self.widgetlist[0]
         self.widget_type.configure(text=self.current)
         self.menu.configure(values=self.widgets[self.current])
         self.menu.set(self.widgets[self.current][0])
         self.update(self.menu.get())
-        
-    # Function for changing current widget type with left button  
+         
     def change_mode_left(self):
+        """ changing current widget type with left button  """
         self.widgetlist.insert(0, self.widgetlist.pop())
         self.current = self.widgetlist[0]
         self.widget_type.configure(text=self.current)
         self.menu.configure(values=self.widgets[self.current])
         self.menu.set(self.widgets[self.current][0])
         self.update(self.menu.get())
-        
-    # Function for updating the contents and their colors
+
     def update(self, value):
+        """ updating the widgets and their colors """
         for i in self.json_data[self.current]:
             if i==self.menu.get():
                 if (self.json_data[self.current][i])[0]!="transparent":
@@ -303,8 +309,8 @@ class App(customtkinter.CTk):
                 else:
                     self.button_dark.configure(fg_color="transparent")
                     
-    # Function for choosing the color for Light mode of the theme
     def change_color_light(self):
+        """ choosing the color for Light mode of the theme """
         default = self.button_light._apply_appearance_mode(self.button_light._fg_color)
         if default=="transparent":
             default = "white"
@@ -315,9 +321,9 @@ class App(customtkinter.CTk):
             for i in self.json_data[self.current]:
                 if i==self.menu.get():
                     (self.json_data[self.current][i])[0] = color1[1]
-                    
-    # Function for choosing the color for Dark mode of the theme                
+               
     def change_color_dark(self):
+        """ choosing the color for Dark mode of the theme """
         default = self.button_dark._apply_appearance_mode(self.button_dark._fg_color)
         if default=="transparent":
             default = "white"      
@@ -328,22 +334,28 @@ class App(customtkinter.CTk):
             for i in self.json_data[self.current]:
                 if i==self.menu.get():
                     (self.json_data[self.current][i])[1] = color2[1]
-
-    # Function for exporting the theme file         
+      
     def save(self):
+        """ exporting the theme file """
+
         save_file = tkinter.filedialog.asksaveasfilename(initialfile="Untitled.json", defaultextension=".json",
                                                          filetypes=[('json', ['*.json']),('All Files', '*.*')])
         try:
+            export_data = copy.deepcopy(self.json_data)
+            for i in export_data:
+                for j in export_data[i]:
+                    if export_data[i][j]==["transparent", "transparent"]:
+                        export_data[i][j] = "transparent"
             if save_file:
                 with open(save_file, "w") as f:
-                    json.dump(self.json_data, f, indent=2)
+                    json.dump(export_data, f, indent=2)
                     f.close()
                 tkinter.messagebox.showinfo("Exported!","Theme saved successfully!")
         except:
             tkinter.messagebox.showerror("Error!","Something went wrong!")
-            
-    # Function for loading the theme file            
+                       
     def load(self):
+        """ load any theme file """
         global json_data
         open_json = tkinter.filedialog.askopenfilename(filetypes=[('json', ['*.json']),('All Files', '*.*')])
         try:
@@ -360,9 +372,8 @@ class App(customtkinter.CTk):
         except:
             tkinter.messagebox.showerror("Error!","Unable to load this theme file!")
         
-
-    # Function for resetting the current colors of the widget to null (default value)
     def reset(self):
+        """ resetting the current colors of the widget to null (default value) """
         for i in self.json_data[self.current]:
             if i==self.menu.get():
                 self.json_data[self.current][i][0] = "transparent"
@@ -370,25 +381,93 @@ class App(customtkinter.CTk):
                 self.json_data[self.current][i][1] = "transparent"
                 self.button_dark.configure(fg_color="transparent")
 
-    # Function for quick testing the theme
     def test(self):
+        """ function for quickly testing the theme """
         DIRPATH = os.path.dirname(os.path.abspath(__file__))
-        if not os.path.exists(os.path.join(DIRPATH, "CTkExample.py")):
-            tkinter.messagebox.showerror("Sorry!","Cannot test, example program is missing!")
+        
+        program = os.path.join(DIRPATH, "CTkExample.py")
+        
+        if not os.path.exists(program):
+            tkinter.messagebox.showerror("Sorry!","Cannot test the theme, example program is missing!")
             return
+        
+        export_data = copy.deepcopy(self.json_data)
+        for i in export_data:
+            for j in export_data[i]:
+                if export_data[i][j]==["transparent", "transparent"]:
+                    export_data[i][j] = "transparent"
 
         with open(os.path.join(DIRPATH, "CTkTheme_test.json"), "w") as f:
-            json.dump(self.json_data, f, indent=2)
-            
-        ch = os.path.join(DIRPATH, "CTkExample.py")
+            json.dump(export_data, f, indent=2)
         
         if sys.platform.startswith("win"):   
-            subprocess.run(["python", ch])
+            subprocess.run(["python", program])
         else:
-            subprocess.run(["python3", ch])
+            subprocess.run(["python3", program])
             
-    # Closing function   
+    def replace_color(self, color, button, mode):
+        """ replace a specific color """
+        
+        if color=="transparent":
+            default = "white"
+        else:
+            default = color
+        new_color = askcolor(title=f"Replace this color: {color}", initialcolor=default)[1]
+        if new_color is None:
+            new_color = "transparent"
+        if mode:
+             for i in self.json_data:
+                for j in self.json_data[i]:
+                    if type(self.json_data[i][j]) is list:
+                        if self.json_data[i][j][1]==color:
+                            self.json_data[i][j][1] = new_color
+                    
+        else:
+            for i in self.json_data:
+                for j in self.json_data[i]:
+                    if type(self.json_data[i][j]) is list:
+                        if self.json_data[i][j][0]==color:
+                            self.json_data[i][j][0] = new_color
+        try: button.configure(text=new_color, fg_color=new_color)
+        except: pass
+        self.update(self.menu.get())
+            
+    def show_colors(self):
+        """ show the color pallete for the theme """
+        toplevel = customtkinter.CTkToplevel()
+        toplevel.resizable(True, True)
+        toplevel.geometry("500x700")
+        toplevel.title("Color Pallete")
+        toplevel.transient(self)
+        toplevel.grab_set()
+        
+        frame_light = customtkinter.CTkScrollableFrame(toplevel, label_text="Light Colors")
+        frame_light.pack(fill="both", expand=True, side="left", padx=(10,5), pady=10)
+        
+        frame_dark = customtkinter.CTkScrollableFrame(toplevel, label_text="Dark Colors")
+        frame_dark.pack(fill="both", expand=True, side="right", padx=(5,10), pady=10)
+
+        set_dark = set()
+        set_light = set()
+        
+        for i in self.json_data:
+            for j in self.json_data[i]:
+                if type(self.json_data[i][j]) is list:
+                    set_dark.add(self.json_data[i][j][1])
+                    set_light.add(self.json_data[i][j][0])
+                    
+        for color in set_dark:
+            button = customtkinter.CTkButton(frame_dark, text=color, fg_color=color)
+            button.configure(command=lambda x=color, y=button: self.replace_color(x, y, 1))
+            button.pack(fill="x", expand=True, padx=10, pady=5)
+            
+        for color in set_light:
+            button = customtkinter.CTkButton(frame_light, text=color, fg_color=color)
+            button.configure(command=lambda x=color, y=button: self.replace_color(x, y, 0))         
+            button.pack(fill="x", expand=True, padx=10, pady=5)
+             
     def on_closing(self):
+        """ close the program """
         quit_ = tkinter.messagebox.askokcancel(title="Exit?", message= "Do you want to exit?")
         if quit_:
             self.destroy()
