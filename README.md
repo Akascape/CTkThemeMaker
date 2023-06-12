@@ -7,7 +7,7 @@ A quick and easy theme builder for customtkinter!
 - Load themes
 - **Quickly test** your themes with a built-in example
 - Lite application
-- Color Pallete
+- Color Palette
 - No extra package installation required, just run the program and make your theme 😤
 
 ## Download
