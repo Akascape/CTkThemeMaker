@@ -8,8 +8,9 @@ customtkinter.set_appearance_mode("System")
 
 DIRPATH = os.path.dirname(os.path.abspath(__file__))
 
-if os.path.exists(os.path.join(DIRPATH,"CTkTheme_test.json")):
-    themepath = os.path.join(DIRPATH,"CTkTheme_test.json")       
+themepath = os.path.join(DIRPATH, "CTkTheme_test.json")
+
+if os.path.exists(themepath):       
     customtkinter.set_default_color_theme(themepath)
 else:
     customtkinter.set_default_color_theme("blue")
@@ -34,13 +35,12 @@ class App(customtkinter.CTk):
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
         self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: print("Button Clicked"))
         self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
-        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: print("Button Clicked"), hover=False)
-        self.sidebar_button_2.grid(row=2, column=0, padx=20, pady=10)
-        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: print("Button Clicked"))
-        self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
-        self.Image_label = customtkinter.CTkLabel(self.sidebar_frame, text="",
-                                                  image=customtkinter.CTkImage(Image.open(os.path.join(os.path.dirname(customtkinter.__file__),
-                                                                                          "assets","icons","CustomTkinter_icon_Windows.ico")), size=(100,100)))
+        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=lambda: print("Button Clicked"))
+        self.sidebar_button_2.grid(row=3, column=0, padx=20, pady=10)
+        
+        self.image = customtkinter.CTkImage(Image.open(os.path.join(os.path.dirname(customtkinter.__file__), "assets","icons",
+                                                                    "CustomTkinter_icon_Windows.ico")), size=(100,100))
+        self.Image_label = customtkinter.CTkLabel(self.sidebar_frame, text="", image=self.image)
         self.Image_label.grid(row=4, column=0, padx=20, pady=10) 
         self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
         self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
@@ -57,7 +57,7 @@ class App(customtkinter.CTk):
         self.entry = customtkinter.CTkEntry(self, placeholder_text="CTkEntry")
         self.entry.grid(row=3, column=1, columnspan=2, padx=(20, 0), pady=(20, 20), sticky="nsew")
 
-        self.main_button_1 = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"))
+        self.main_button_1 = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2)
         self.main_button_1.grid(row=3, column=3, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
         # create textbox
@@ -69,7 +69,6 @@ class App(customtkinter.CTk):
         self.tabview.grid(row=0, column=2, padx=(20, 0), pady=(20, 0), sticky="nsew")
         self.tabview.add("CTkTabview")
         self.tabview.add("Frame")
-        self.tabview.add("ScrollBar")
         self.tabview.tab("CTkTabview").grid_columnconfigure(0, weight=1)  # configure grid of individual tabs
         self.tabview.tab("Frame").grid_columnconfigure(0, weight=1)
 
@@ -82,23 +81,19 @@ class App(customtkinter.CTk):
         self.string_input_button = customtkinter.CTkButton(self.tabview.tab("CTkTabview"), text="Open CTkInputDialog",
                                                            command=self.open_input_dialog_event)
         self.string_input_button.grid(row=2, column=0, padx=20, pady=(10, 10))
-        self.label_tab_2 = customtkinter.CTkFrame(self.tabview.tab("Frame"), height=100)
-        self.label_tab_2.grid(row=0, column=0, padx=20, pady=20)
+        self.label_tab_2 = customtkinter.CTkFrame(self.tabview.tab("Frame"), height=150)
+        self.label_tab_2.grid(row=0, column=0, padx=(5,0), pady=20)
     
-        self.scrollbar = customtkinter.CTkScrollbar(self.tabview.tab("ScrollBar"), height=150, fg_color="transparent")
-        self.scrollbar.grid(row=0, column=0, padx=(20,0), pady=20, sticky="nse")
+        self.scrollbar = customtkinter.CTkScrollbar(self.tabview.tab("Frame"), height=150)
+        self.scrollbar.grid(row=0, column=1, padx=5, pady=20, sticky="nse")
         
-        self.scrollbar2 = customtkinter.CTkScrollbar(self.tabview.tab("ScrollBar"), width=150, orientation="horizontal",
-                                                     fg_color="transparent")
-        self.scrollbar2.grid(row=0, column=0, padx=20, pady=20, sticky="wes")
         self.scrollbar.set(1,0.1)
-        self.scrollbar2.set(1,0.5)
         
         # create radiobutton frame
         self.radiobutton_frame = customtkinter.CTkFrame(self)
         self.radiobutton_frame.grid(row=0, column=3, padx=(20, 20), pady=(20, 0), sticky="nsew")
         self.radio_var = tkinter.IntVar(value=0)
-        self.label_radio_group = customtkinter.CTkLabel(master=self.radiobutton_frame, text="CTkRadioButton Group:")
+        self.label_radio_group = customtkinter.CTkLabel(master=self.radiobutton_frame, text="CTkRadioButtons")
         self.label_radio_group.grid(row=0, column=2, columnspan=1, padx=10, pady=10, sticky="")
         self.radio_button_1 = customtkinter.CTkRadioButton(master=self.radiobutton_frame, variable=self.radio_var, value=0)
         self.radio_button_1.grid(row=1, column=2, pady=10, padx=20, sticky="n")
@@ -120,7 +115,7 @@ class App(customtkinter.CTk):
         self.switch_2.grid(row=4, column=0, pady=(10, 20), padx=20, sticky="n")
 
         # create slider and progressbar frame
-        self.slider_progressbar_frame = customtkinter.CTkFrame(self, fg_color="transparent")
+        self.slider_progressbar_frame = customtkinter.CTkFrame(self)
         self.slider_progressbar_frame.grid(row=1, column=1, columnspan=2, padx=(20, 0), pady=(20, 0), sticky="nsew")
         self.slider_progressbar_frame.grid_columnconfigure(0, weight=1)
         self.slider_progressbar_frame.grid_rowconfigure(4, weight=1)
@@ -137,7 +132,7 @@ class App(customtkinter.CTk):
         self.progressbar_3 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="vertical")
         self.progressbar_3.grid(row=0, column=2, rowspan=5, padx=(10, 20), pady=(10, 10), sticky="ns")
             
-        label = customtkinter.CTkLabel(self.sidebar_frame, text="create a new window", font=("",13))
+        label = customtkinter.CTkLabel(self.sidebar_frame, text="create toplevel", font=("",13))
         label.grid()
 
         label.bind("<Button-1>", lambda event: self.new_window())
@@ -145,7 +140,7 @@ class App(customtkinter.CTk):
         label.bind("<Leave>", lambda event: label.configure(font=("",13), cursor="arrow"))
 
         # set default values
-        self.sidebar_button_3.configure(state="disabled", text="Disabled CTkButton")
+        self.sidebar_button_2.configure(state="disabled", text="Disabled CTkButton")
         self.checkbox_2.configure(state="disabled")
         self.switch_2.configure(state="disabled")
         self.checkbox_1.select()
