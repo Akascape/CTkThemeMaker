@@ -267,7 +267,7 @@ class App(customtkinter.CTk):
         self.button_reset = customtkinter.CTkButton(master=self, height=40, width=110, text="Reset", command=self.reset)
         self.button_reset.grid(row=3, column=4,  columnspan=2, sticky="nswe", padx=(5,20), pady=(0,20))
         
-        self.palette = customtkinter.CTkButton(master=self, height=40, width=110, text="Color palette", command=self.show_colors)
+        self.palette = customtkinter.CTkButton(master=self, height=40, width=110, text="Color Palette", command=self.show_colors)
         self.palette.grid(row=4, column=0, columnspan=3, sticky="nswe", padx=(20,5), pady=(0,20))
 
         self.quick_test = customtkinter.CTkButton(master=self, height=40, width=110, text="QUICK TEST", command=self.test)
@@ -337,7 +337,6 @@ class App(customtkinter.CTk):
       
     def save(self):
         """ exporting the theme file """
-
         save_file = tkinter.filedialog.asksaveasfilename(initialfile="Untitled.json", defaultextension=".json",
                                                          filetypes=[('json', ['*.json']),('All Files', '*.*')])
         try:
@@ -406,8 +405,7 @@ class App(customtkinter.CTk):
             subprocess.run(["python3", program])
             
     def replace_color(self, color, button, mode):
-        """ replace a specific color """
-        
+        """ replace a specific color """      
         if color=="transparent":
             default = "white"
         else:
@@ -437,7 +435,7 @@ class App(customtkinter.CTk):
         toplevel = customtkinter.CTkToplevel()
         toplevel.resizable(True, True)
         toplevel.geometry("500x700")
-        toplevel.title("Color palette")
+        toplevel.title("Color Palette")
         toplevel.transient(self)
         toplevel.grab_set()
         
