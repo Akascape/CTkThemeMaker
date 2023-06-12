@@ -250,7 +250,7 @@ class App(customtkinter.CTk):
         self.menu.grid(row=1, column=0, columnspan=6, sticky="nswe", padx=20)
 
         self.button_light = customtkinter.CTkButton(master=self, height=100, width=200, corner_radius=10, border_color="white",
-                                         text_color="grey80", border_width=2, text="Light", hover=False, command=self.change_color_light)
+                                         text_color="grey50", border_width=2, text="Light", hover=False, command=self.change_color_light)
         self.button_light.grid(row=2, column=0, sticky="nswe", columnspan=3, padx=(20,5), pady=20)
     
         self.button_dark = customtkinter.CTkButton(master=self, height=100, width=200, corner_radius=10, border_color="white",
