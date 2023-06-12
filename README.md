@@ -7,7 +7,8 @@ A quick and easy theme builder for customtkinter!
 - Load themes
 - **Quickly test** your themes with a built-in example
 - Lite application
-- No installation required, just run the program and make your theme 😤
+- Color Pallete
+- No extra package installation required, just run the program and make your theme 😤
 
 ## Download
 ### [<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Akascape/CTkThemeMaker?&color=green&label=Download%20CTkThemeMaker&logo=Python&logoColor=yellow&style=for-the-badge"  width="400">](https://github.com/Akascape/CTkThemeMaker/archive/refs/heads/main.zip)
