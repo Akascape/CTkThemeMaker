@@ -267,8 +267,8 @@ class App(customtkinter.CTk):
         self.button_reset = customtkinter.CTkButton(master=self, height=40, width=110, text="Reset", command=self.reset)
         self.button_reset.grid(row=3, column=4,  columnspan=2, sticky="nswe", padx=(5,20), pady=(0,20))
         
-        self.pallete = customtkinter.CTkButton(master=self, height=40, width=110, text="Color Pallete", command=self.show_colors)
-        self.pallete.grid(row=4, column=0, columnspan=3, sticky="nswe", padx=(20,5), pady=(0,20))
+        self.palette = customtkinter.CTkButton(master=self, height=40, width=110, text="Color palette", command=self.show_colors)
+        self.palette.grid(row=4, column=0, columnspan=3, sticky="nswe", padx=(20,5), pady=(0,20))
 
         self.quick_test = customtkinter.CTkButton(master=self, height=40, width=110, text="QUICK TEST", command=self.test)
         self.quick_test.grid(row=4, column=3, columnspan=3, sticky="nswe", padx=(5,20), pady=(0,20))
@@ -433,11 +433,11 @@ class App(customtkinter.CTk):
         self.update(self.menu.get())
             
     def show_colors(self):
-        """ show the color pallete for the theme """
+        """ show the color palette for the theme """
         toplevel = customtkinter.CTkToplevel()
         toplevel.resizable(True, True)
         toplevel.geometry("500x700")
-        toplevel.title("Color Pallete")
+        toplevel.title("Color palette")
         toplevel.transient(self)
         toplevel.grab_set()
         
