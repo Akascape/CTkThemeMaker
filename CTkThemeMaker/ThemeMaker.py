@@ -62,7 +62,7 @@ class App(customtkinter.CTk):
                     "text_color":["gray10", "#DCE4EE"],
                     "placeholder_text_color": ["gray52", "gray62"]
                   },
-                  "CTkCheckbox": {
+                  "CTkCheckBox": {
                     "corner_radius": 6,
                     "border_width": 3,
                     "fg_color": ["#3B8ED0", "#1F6AA5"],
@@ -83,7 +83,7 @@ class App(customtkinter.CTk):
                     "text_color": ["gray10", "#DCE4EE"],
                     "text_color_disabled": ["gray60", "gray45"]
                   },
-                  "CTkRadiobutton": {
+                  "CTkRadioButton": {
                     "corner_radius": 1000,
                     "border_width_checked": 6,
                     "border_width_unchecked": 3,
