@@ -455,12 +455,12 @@ class App(customtkinter.CTk):
                     set_light.add(self.json_data[i][j][0])
                     
         for color in set_dark:
-            button = customtkinter.CTkButton(frame_dark, text=color, fg_color=color)
+            button = customtkinter.CTkButton(frame_dark, text=color, fg_color=color, hover=False)
             button.configure(command=lambda x=color, y=button: self.replace_color(x, y, 1))
             button.pack(fill="x", expand=True, padx=10, pady=5)
             
         for color in set_light:
-            button = customtkinter.CTkButton(frame_light, text=color, fg_color=color)
+            button = customtkinter.CTkButton(frame_light, text=color, fg_color=color, hover=False)
             button.configure(command=lambda x=color, y=button: self.replace_color(x, y, 0))         
             button.pack(fill="x", expand=True, padx=10, pady=5)
              
