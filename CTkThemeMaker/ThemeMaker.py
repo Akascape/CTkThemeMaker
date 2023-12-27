@@ -221,7 +221,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         
         #--------------------Main root Window--------------------#
-        super().__init__()
+        super().__init__(fg_color=customtkinter.ThemeManager.theme["CTkFrame"]["top_fg_color"])
         customtkinter.set_default_color_theme("blue")
         self.title("CustomTkinter ThemeMaker")
         self.geometry("500x450")
@@ -238,14 +238,14 @@ class App(customtkinter.CTk):
         self.widget_type.grid(row=0, column=0, sticky="nswe", padx=80, pady=20)
 
         self.left_button = customtkinter.CTkButton(master=self.frame_info, text="<", width=20, height=20, corner_radius=10,
-                                        fg_color=("white", "gray38"), command=self.change_mode_left)
+                                        fg_color=("white", "gray38"), command=self.change_mode_left, text_color=("black","white"))
         self.left_button.grid(row=0, column=0, sticky="nsw", padx=20, pady=20)
 
         self.right_button = customtkinter.CTkButton(master=self.frame_info, text=">", width=20, height=20, corner_radius=10,
-                                        fg_color=("white", "gray38"), command=self.change_mode_right)
+                                        fg_color=("white", "gray38"), command=self.change_mode_right, text_color=("black","white"))
         self.right_button.grid(row=0, column=0, sticky="nse", padx=20, pady=20)
 
-        self.menu = customtkinter.CTkOptionMenu(master=self, fg_color=("white", "gray38"), button_color=("white", "gray38"),
+        self.menu = customtkinter.CTkOptionMenu(master=self, fg_color=("white", "gray38"), button_color=("white", "gray38"), text_color=("black","white"),
                                          height=30, values=list(self.widgets.items())[0][1], command=self.update)   
         self.menu.grid(row=1, column=0, columnspan=6, sticky="nswe", padx=20)
 
